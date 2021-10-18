@@ -24,6 +24,18 @@ public class Persona {
 		return this.enfermedad;
 	}
 
+	public String getNombre() {
+		return nombre;
+	}
+
+	public int getDni() {
+		return dni;
+	}
+
+	public int getEdad() {
+		return edad;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -39,9 +51,6 @@ public class Persona {
 		sb.append("\n}\n");
 		return sb.toString();
 	}
-	
-	
-	
 	
 
 }
