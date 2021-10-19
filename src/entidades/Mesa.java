@@ -9,27 +9,42 @@ public abstract class Mesa {
     private int codigoID;
     private Votante presidenteMesa;
     private HashMap<Integer,Integer> franjasHorarias; // (franja-cupo)
-    private int cuposXFranjaHoraria;
     
-    public Mesa(int codigoID, Votante presidenteMesa) {
-        this.codigoID = codigoID;
-        this.presidenteMesa = presidenteMesa;
-        this.cuposXFranjaHoraria=0;
-        this.franjasHorarias= new HashMap<>();
+    public Mesa(int codigoID, Votante presidenteMesa) throws Exception {
+    	if(codigoID > 0 || presidenteMesa != null) {
+    		this.codigoID = codigoID;
+            this.franjasHorarias= new HashMap<>();
+            crearFranjasHorarias();
+            asignarPresidente(presidenteMesa);
+    	}else {
+    		throw new Exception();
+    	}
     }
 
-    public abstract void crearFranjasHorarias(int cantidad, int cuposXFranjaHoraria);
+    public abstract void crearFranjasHorarias();
 
-    /*public void asignarPresidente(Votante votante){
+    public void asignarPresidente(Votante votante){
         if (!hayPresidenteDeMesa()) {
             this.presidenteMesa=votante;
+            
+            Tupla<Integer, Integer> turno = dameTurno();
+            presidenteMesa.setPresidenteDeMesa();
+            presidenteMesa.asignarTurno(turno.getPrimerElemento(), turno.getSegundoElemento());
+            
         }
-    }*/
+    }
 
     public boolean hayPresidenteDeMesa() {
         return this.presidenteMesa!=null ;
     }
-
+    
+    /**
+     * 
+     * 
+     * @return true, si existe algún valor en franjasHorarias tal que > 0
+     * Advertencia, no se usa este metodo
+     *
+     */
     public boolean hayTurnosDisponibles() {
         Iterator<Integer> it = this.franjasHorarias.keySet().iterator();
         boolean existeCupoDisponible = false;
@@ -45,7 +60,7 @@ public abstract class Mesa {
     }
 
     public void decrementarCupo(int franjaHoraria) {
-        this.franjasHorarias.put(franjaHoraria, this.franjasHorarias.get(franjaHoraria)-1);
+        this.franjasHorarias.replace(franjaHoraria, this.franjasHorarias.get(franjaHoraria)-1);
     }
     
     public int buscarFranjaHoraria() {
@@ -54,7 +69,7 @@ public abstract class Mesa {
         while (it.hasNext()) {
             Integer franja = (Integer)it.next();
             if (this.franjasHorarias.get(franja)>0) {
-                franjaHoraria= this.franjasHorarias.get(franja);
+                franjaHoraria= franja;
                 return franjaHoraria;
             }
         }
@@ -65,11 +80,35 @@ public abstract class Mesa {
         int franjaDisponible = buscarFranjaHoraria();
         if (franjaDisponible!=-1) {
             Tupla<Integer,Integer> turno= new Tupla<>(dameCodigoMesa(),franjaDisponible);
+            decrementarCupo(franjaDisponible);
             return turno;
         }
         else
             return null;
     }
+
+	public HashMap<Integer, Integer> getFranjasHorarias() {
+		return franjasHorarias;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("-------------------------------------------\n");
+		sb.append("Mesa N° ").append(this.codigoID).append("\n");
+		sb.append("Presidente de mesa :").append(this.presidenteMesa.getDni()).append("\n");
+		
+		Iterator<Integer> it = this.franjasHorarias.keySet().iterator();
+		while(it.hasNext()) {
+			Integer horario = it.next();
+			sb.append("Hora : ").append(horario).append(" Cupos : ").append(this.franjasHorarias.get(horario));
+			sb.append("\n");
+		}
+		return sb.toString();
+	}
+    
+    
+    
 
 }
 

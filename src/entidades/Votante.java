@@ -21,9 +21,9 @@ public class Votante extends Persona {
 		return this.presidenteDeMesa;
 	}
 	
-	public void setPresidenteDeMesa(boolean presidenteDeMesa) {
+	public void setPresidenteDeMesa() {
 		if (!tieneTurno()) {
-			this.presidenteDeMesa = presidenteDeMesa;
+			this.presidenteDeMesa = true;
 		}
 	}
 
