@@ -7,12 +7,13 @@ import estructurasdedatos.Tupla;
 
 public abstract class Mesa {
     private int codigoID;
+    private static int codigoContador = 0;
     private Votante presidenteMesa;
     private HashMap<Integer,Integer> franjasHorarias; // (franja-cupo)
     
-    public Mesa(int codigoID, Votante presidenteMesa) throws Exception {
-    	if(codigoID > 0 || presidenteMesa != null) {
-    		this.codigoID = codigoID;
+    public Mesa(Votante presidenteMesa) throws Exception {
+    	if(presidenteMesa != null) {
+    		this.codigoID = codigoContador++;
             this.franjasHorarias= new HashMap<>();
             crearFranjasHorarias();
             asignarPresidente(presidenteMesa);
@@ -42,7 +43,7 @@ public abstract class Mesa {
      * 
      * 
      * @return true, si existe algún valor en franjasHorarias tal que > 0
-     *
+     * @Advertencia, no se usa este metodo
      *
      */
     public boolean hayTurnosDisponibles() {

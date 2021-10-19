@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 public class MesaEnfermedadPreexistente extends Mesa{
 
-	public MesaEnfermedadPreexistente(int codigoID, Votante presidenteMesa) throws Exception {
-		super(codigoID, presidenteMesa);
+	public MesaEnfermedadPreexistente(Votante presidenteMesa) throws Exception {
+		super(presidenteMesa);
 		crearFranjasHorarias();
 	}
 

@@ -11,6 +11,11 @@ public class Votante extends Persona {
 	
 	public Votante(String nombre, int dni, int edad, boolean enfermedad, boolean certificadoTrabajo ) throws Exception {
 		super(nombre, dni, edad, enfermedad);
+		
+		if(edad < 16) {
+			throw new Exception();
+		}
+		
 		this.voto = false;
 		this.turno = null;
 		this.certificadoTrabajo=certificadoTrabajo;

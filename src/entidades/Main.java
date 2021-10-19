@@ -7,8 +7,8 @@ public class Main {
 		try {
 			pres1= new Votante("Nicolas", 3434535, 29, false, true);
 			pres2 = new Votante("Ezequiel", 42145454, 21, false, true);
-			MesaMayores mesaMayores = new MesaMayores(1010, pres1);
-			MesaGenerica mesaGenerica = new MesaGenerica(2020, pres2);
+			MesaMayores mesaMayores = new MesaMayores(pres1);
+			MesaGenerica mesaGenerica = new MesaGenerica(pres2);
 			
 			System.out.println(mesaMayores);
 			System.out.println(mesaGenerica);

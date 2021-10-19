@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 public class MesaGenerica extends Mesa{
 
-	public MesaGenerica(int codigoID, Votante presidenteMesa) throws Exception {
-		super(codigoID, presidenteMesa);
+	public MesaGenerica(Votante presidenteMesa) throws Exception {
+		super(presidenteMesa);
 	}
 
 	@Override
