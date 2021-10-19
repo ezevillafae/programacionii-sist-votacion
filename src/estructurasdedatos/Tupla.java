@@ -18,6 +18,11 @@ public class Tupla<A,B> {
 		return segundoElemento;
 	}
 
-
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[").append(this.primerElemento).append(", ").append(this.segundoElemento).append("]").append("\n");
+		return sb.toString();
+	}
 	
 }

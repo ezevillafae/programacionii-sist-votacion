@@ -24,14 +24,14 @@ public abstract class Mesa {
     public abstract void crearFranjasHorarias();
 
     public void asignarPresidente(Votante votante){
-        if (!hayPresidenteDeMesa()) {
-            this.presidenteMesa=votante;
-            
-            Tupla<Integer, Integer> turno = dameTurno();
-            presidenteMesa.setPresidenteDeMesa();
-            presidenteMesa.asignarTurno(turno.getPrimerElemento(), turno.getSegundoElemento());
-            
+        if(votante == null || votante.esPresidenteDeMesa() || hayPresidenteDeMesa()) {
+        	throw new RuntimeException();
         }
+ 
+        this.presidenteMesa=votante;
+        Tupla<Integer, Integer> turno = dameTurno();
+        presidenteMesa.setPresidenteDeMesa();
+        presidenteMesa.asignarTurno(turno.getPrimerElemento(), turno.getSegundoElemento());
     }
 
     public boolean hayPresidenteDeMesa() {
@@ -42,7 +42,7 @@ public abstract class Mesa {
      * 
      * 
      * @return true, si existe algún valor en franjasHorarias tal que > 0
-     * Advertencia, no se usa este metodo
+     *
      *
      */
     public boolean hayTurnosDisponibles() {
