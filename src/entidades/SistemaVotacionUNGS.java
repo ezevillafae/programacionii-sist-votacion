@@ -2,7 +2,10 @@ package entidades;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
+
+import estructurasdedatos.Tupla;
 
 public class SistemaVotacionUNGS {
 	private String nombreSistema;
@@ -79,5 +82,72 @@ public class SistemaVotacionUNGS {
 		return mesa_nueva.dameCodigoMesa();
 		
 	}
+
+	
+	private Tupla<Integer, Integer> asignarMesaAVotante(Votante votante, String tipoDeMesa) {
+		if(!verificarMesa(tipoDeMesa) || votante == null) {
+			throw new RuntimeException();
+		}
+		
+		Iterator<Mesa> it = mesas.iterator();
+		Tupla<Integer, Integer> turno = null;
+		
+		while (it.hasNext() && turno == null) {
+			Mesa mesa = (Mesa) it.next();
+			
+			if(tipoDeMesa.equals(Definiciones.mayor65)) {
+				if(mesa instanceof MesaMayores)
+					turno = mesa.dameTurno();
+			} else if(tipoDeMesa.equals(Definiciones.enfPreexistente)) {
+				if(mesa instanceof MesaEnfermedadPreexistente)
+					turno = mesa.dameTurno();
+			}else if(tipoDeMesa.equals(Definiciones.trabajador)) {
+				if(mesa instanceof MesaTrabajadores)
+					turno = mesa.dameTurno();
+			}else if(tipoDeMesa.equals(Definiciones.general)) {
+				if(mesa instanceof MesaGenerica)
+					turno = mesa.dameTurno();
+			}
+		}
+		
+		return turno;
+		
+	}
+	/**
+	 * -Si es trabajador vota en mesa trabajadores
+	 * -Si es mayor y enfermedadPrex, en cualquier mesa con disponibilidad
+	 * -Sino, generica
+	 * 
+	 * @param dni
+	 * @return
+	 */
+	public Tupla<Integer,Integer> asignarTurno(int dni){
+		if(!estaRegistrado(dni)) {
+			throw new RuntimeException();
+		}
+		Votante votante = this.personasRegistradas.get(dni);
+		if(votante.tieneTurno()) {
+			return votante.consultarTurno();
+		}
+		
+		Tupla<Integer, Integer> turno = null;
+		if(votante.tieneCertificadoTrabajo()) {
+			turno = asignarMesaAVotante(votante, Definiciones.trabajador);
+		}else if(votante.esMayorDe65() && votante.tieneEnfermedadPreexistente()) {
+			turno = asignarMesaAVotante(votante, Definiciones.mayor65);
+			if(turno == null)
+				turno = asignarMesaAVotante(votante, Definiciones.enfPreexistente);
+		}else if(votante.esMayorDe65()) {
+			turno = asignarMesaAVotante(votante, Definiciones.mayor65);
+		}else if(votante.tieneEnfermedadPreexistente()) {
+			turno = asignarMesaAVotante(votante, Definiciones.enfPreexistente);
+		}else {
+			turno = asignarMesaAVotante(votante, Definiciones.general);
+		}
+		
+		return turno;
+	}
+	
+	
 
 }
