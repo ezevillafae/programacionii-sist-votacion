@@ -9,11 +9,11 @@ public class Votante extends Persona {
 	private boolean voto;
 	private Tupla<Integer, Integer> turno;
 	
-	public Votante(String nombre, int dni, int edad, boolean enfermedad, boolean certificadoTrabajo ) throws Exception {
+	public Votante(String nombre, int dni, int edad, boolean enfermedad, boolean certificadoTrabajo ) {
 		super(nombre, dni, edad, enfermedad);
 		
 		if(edad < 16) {
-			throw new Exception();
+			throw new RuntimeException();
 		}
 		
 		this.voto = false;

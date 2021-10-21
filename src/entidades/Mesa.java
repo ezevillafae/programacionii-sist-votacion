@@ -11,14 +11,14 @@ public abstract class Mesa {
     private Votante presidenteMesa;
     private HashMap<Integer,Integer> franjasHorarias; // (franja-cupo)
     
-    public Mesa(Votante presidenteMesa) throws Exception {
+    public Mesa(Votante presidenteMesa) {
     	if(presidenteMesa != null) {
     		this.codigoID = codigoContador++;
             this.franjasHorarias= new HashMap<>();
             crearFranjasHorarias();
             asignarPresidente(presidenteMesa);
     	}else {
-    		throw new Exception();
+    		throw new RuntimeException();
     	}
     }
 

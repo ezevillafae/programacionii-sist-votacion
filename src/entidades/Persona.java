@@ -1,14 +1,15 @@
 package entidades;
 
+
 public class Persona {
 	private String nombre;
 	private int dni;
 	private int edad;
 	private boolean enfermedad;
 	
-	public Persona(String nombre, int dni, int edad, boolean enfermedad) throws Exception {
+	public Persona(String nombre, int dni, int edad, boolean enfermedad) {
 		if(dni <= 0 || nombre == null || edad < 0 || edad >= 120) {
-			throw new Exception();
+			throw new RuntimeException();
 		}
 		this.nombre = nombre;
 		this.dni = dni;

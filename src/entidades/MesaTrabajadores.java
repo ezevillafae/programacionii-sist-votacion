@@ -7,14 +7,14 @@ import estructurasdedatos.Tupla;
 
 public class MesaTrabajadores extends Mesa{
 
-	public MesaTrabajadores(Votante presidenteMesa) throws Exception {
+	public MesaTrabajadores(Votante presidenteMesa) {
 		super(presidenteMesa);
 	}
 
 	@Override
 	public void crearFranjasHorarias() {
 		HashMap<Integer, Integer> franjas = getFranjasHorarias();
-		franjas.put(8, Fixture.INSTANCE.cupoXFranjaHorariaTrabajadores);
+		franjas.put(8, Definiciones.cupoXFranjaHorariaTrabajadores);
 	}
 	
 	@Override

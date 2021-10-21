@@ -36,14 +36,17 @@ public class SistemaVotacionUNGS {
 		
 	}
 	
-	private boolean verificarMesa(String tipoMesa, int dni)   {
-		if( !tipoMesa.equals(Fixture.INSTANCE.mayor65) ||
-			!tipoMesa.equals(Fixture.INSTANCE.enfPreexistente) ||
-			!tipoMesa.equals(Fixture.INSTANCE.trabajador) ||
-			!tipoMesa.equals(Fixture.INSTANCE.general)) {
+	private boolean verificarMesa(String tipoMesa)   {
+		if( !tipoMesa.equals(Definiciones.mayor65) ||
+			!tipoMesa.equals(Definiciones.enfPreexistente) ||
+			!tipoMesa.equals(Definiciones.trabajador) ||
+			!tipoMesa.equals(Definiciones.general)) {
 			return false;
 		}
 		
+		return true;
+	}
+	private boolean verificarPresidentDeMesa(int dni) {
 		if(!estaRegistrado(dni))
 			return false;
 		if(this.personasRegistradas.get(dni).tieneTurno())
@@ -52,22 +55,25 @@ public class SistemaVotacionUNGS {
 		return true;
 	}
 	
-	public int agregarMesa(String tipoMesa, int dni) throws Exception {
-		if(!verificarMesa(tipoMesa, dni)) {
-			throw new Exception();
+	public int agregarMesa(String tipoMesa, int dni){
+		if(!verificarMesa(tipoMesa) || !verificarPresidentDeMesa(dni)) {
+			throw new RuntimeException();
 		}
 		Votante presidente = this.personasRegistradas.get(dni);
 		Mesa mesa_nueva = null;
 		
-		if(tipoMesa.equals(Fixture.INSTANCE.enfPreexistente)) {
+		if(tipoMesa.equals(Definiciones.enfPreexistente)) {
 			mesa_nueva = new MesaEnfermedadPreexistente(presidente);
 			this.mesas.add(mesa_nueva);
-		}else if(tipoMesa.equals(Fixture.INSTANCE.mayor65)){
-			
-		}else if(tipoMesa.equals(Fixture.INSTANCE.trabajador)) {
-			
+		}else if(tipoMesa.equals(Definiciones.mayor65)){
+			mesa_nueva = new MesaMayores(presidente);
+			this.mesas.add(mesa_nueva);
+		}else if(tipoMesa.equals(Definiciones.trabajador)) {
+			mesa_nueva = new MesaTrabajadores(presidente);
+			this.mesas.add(mesa_nueva);
 		}else {
-			
+			mesa_nueva = new MesaGenerica(presidente);
+			this.mesas.add(mesa_nueva);
 		}
 		
 		return mesa_nueva.dameCodigoMesa();
