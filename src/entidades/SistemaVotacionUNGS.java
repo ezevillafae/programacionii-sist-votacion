@@ -2,7 +2,6 @@ package entidades;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import estructurasdedatos.Tupla;
@@ -40,21 +39,20 @@ public class SistemaVotacionUNGS {
 	}
 	
 	private boolean verificarMesa(String tipoMesa)   {
-		if( !tipoMesa.equals(Definiciones.mayor65) ||
-			!tipoMesa.equals(Definiciones.enfPreexistente) ||
-			!tipoMesa.equals(Definiciones.trabajador) ||
-			!tipoMesa.equals(Definiciones.general)) {
-			return false;
+		if( tipoMesa.equals(Definiciones.mayor65) ||
+			tipoMesa.equals(Definiciones.enfPreexistente) ||
+			tipoMesa.equals(Definiciones.trabajador) ||
+			tipoMesa.equals(Definiciones.general)) {
+			return true;
 		}
-		
-		return true;
+		return false;
 	}
+	
 	private boolean verificarPresidentDeMesa(int dni) {
 		if(!estaRegistrado(dni))
 			return false;
 		if(this.personasRegistradas.get(dni).tieneTurno())
 			return false;
-		
 		return true;
 	}
 	
@@ -82,23 +80,18 @@ public class SistemaVotacionUNGS {
 		return mesa_nueva.dameCodigoMesa();
 		
 	}
-
 	
-	private Tupla<Integer, Integer> asignarMesaAVotante(Votante votante, String tipoDeMesa) {
+	private Tupla<Integer, Integer> asignarMesaAVotante(Votante votante, String tipoDeMesa){
 		if(!verificarMesa(tipoDeMesa) || votante == null) {
 			throw new RuntimeException();
 		}
 		
-		Iterator<Mesa> it = mesas.iterator();
-		Tupla<Integer, Integer> turno = null;
-		
-		while (it.hasNext() && turno == null) {
-			Mesa mesa = (Mesa) it.next();
-			
+		Tupla<Integer,Integer> turno = null;
+		for (Mesa mesa : mesas) {
 			if(tipoDeMesa.equals(Definiciones.mayor65)) {
 				if(mesa instanceof MesaMayores)
 					turno = mesa.dameTurno();
-			} else if(tipoDeMesa.equals(Definiciones.enfPreexistente)) {
+			}else if(tipoDeMesa.equals(Definiciones.enfPreexistente)) {
 				if(mesa instanceof MesaEnfermedadPreexistente)
 					turno = mesa.dameTurno();
 			}else if(tipoDeMesa.equals(Definiciones.trabajador)) {
@@ -109,10 +102,9 @@ public class SistemaVotacionUNGS {
 					turno = mesa.dameTurno();
 			}
 		}
-		
 		return turno;
-		
 	}
+	
 	/**
 	 * -Si es trabajador vota en mesa trabajadores
 	 * -Si es mayor y enfermedadPrex, en cualquier mesa con disponibilidad
@@ -125,6 +117,7 @@ public class SistemaVotacionUNGS {
 		if(!estaRegistrado(dni)) {
 			throw new RuntimeException();
 		}
+		
 		Votante votante = this.personasRegistradas.get(dni);
 		if(votante.tieneTurno()) {
 			return votante.consultarTurno();
@@ -148,6 +141,36 @@ public class SistemaVotacionUNGS {
 		return turno;
 	}
 	
+	public int asignarTurnos() {
+		int cantTurnosAsignados = 0;
+		Set<Integer> dniVotantes = this.personasRegistradas.keySet();
+		for (Integer dniVotante : dniVotantes) {
+			if(consultarTurno(dniVotante)==null) { //Si el votante no tiene turno
+				if(asignarTurno(dniVotante)!=null) //Si se asignó un turno al votante
+					cantTurnosAsignados++;
+			}
+		}
+		return cantTurnosAsignados;
+	}
 	
+	
+	public Tupla<Integer, Integer> consultarTurno(int dni) {
+		if(!estaRegistrado(dni)) {
+			throw new RuntimeException();
+		}
+		return this.personasRegistradas.get(dni).consultarTurno();
+	}
+	
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.nombreSistema).append("\n");
+		for(Mesa m : this.mesas) {
+			sb.append(m);
+		}
+		
+		return sb.toString();
+	}
 
 }

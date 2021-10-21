@@ -6,7 +6,6 @@ public class MesaEnfermedadPreexistente extends Mesa{
 
 	public MesaEnfermedadPreexistente(Votante presidenteMesa) {
 		super(presidenteMesa);
-		crearFranjasHorarias();
 	}
 
 	@Override

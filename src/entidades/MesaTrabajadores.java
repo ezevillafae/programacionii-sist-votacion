@@ -29,4 +29,6 @@ public class MesaTrabajadores extends Mesa{
 		Tupla<Integer,Integer> turno= new Tupla<>(dameCodigoMesa(),franjaDisponible);
 		return turno;
 	}
+	
+	
 }

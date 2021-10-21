@@ -1,4 +1,4 @@
-package entidades;
+package test;
 
 public class Fixture {
 	
@@ -23,9 +23,6 @@ public class Fixture {
 	final Integer dniSinRegistrar = 10101010;
 
 	final Integer cupoXFranjaHorariaEnfPreexistente = 20;
-	final Integer cupoXFranjaHorariaEnMayores = 10;
-	final Integer cupoXFranjaHorariaEnGenerica = 30;
-	final Integer cupoXFranjaHorariaTrabajadores = -1;
 	final Integer cantDnis = 200;
 	final Integer edad = 70;
 	

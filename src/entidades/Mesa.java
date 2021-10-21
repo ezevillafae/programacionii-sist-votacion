@@ -97,6 +97,7 @@ public abstract class Mesa {
 		StringBuilder sb = new StringBuilder();
 		sb.append("-------------------------------------------\n");
 		sb.append("Mesa N° ").append(this.codigoID).append("\n");
+		sb.append(this.getClass().getName()).append("\n");
 		sb.append("Presidente de mesa :").append(this.presidenteMesa.getDni()).append("\n");
 		
 		Iterator<Integer> it = this.franjasHorarias.keySet().iterator();
