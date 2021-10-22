@@ -254,7 +254,7 @@ public class SistemaVotacionUNGS {
 		List<Tupla<String,Integer>> lista = new LinkedList<Tupla<String,Integer>>();
 		
 		for (Integer dniVotante : dniVotantes) {
-			votante = this.personasRegistradas.get(dniVotantes);
+			votante = this.personasRegistradas.get(dniVotante);
 			if(!votante.tieneTurno()) {
 				if(votante.tieneCertificadoTrabajo()) {
 					cantidadTrabajadores++;
