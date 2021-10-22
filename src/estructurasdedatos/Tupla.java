@@ -9,12 +9,12 @@ public class Tupla<A,B> {
 		this.segundoElemento = e2;
 	}
 
-	public A getPrimerElemento() {
+	public A getX() {
 		return primerElemento;
 	}
 
 
-	public B getSegundoElemento() {
+	public B getY() {
 		return segundoElemento;
 	}
 

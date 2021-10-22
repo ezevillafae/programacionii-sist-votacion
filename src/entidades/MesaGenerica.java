@@ -14,7 +14,7 @@ public class MesaGenerica extends Mesa{
 	public void crearFranjasHorarias() {
 		HashMap<Integer, Integer> franjas = getFranjasHorarias();
 		for (int i = 8; i < 18; i++) {
-			franjas.put(i, Definiciones.cupoXFranjaHorariaEnGenerica);
+			franjas.put(i, 0);
 		}
 	}
 	
@@ -25,7 +25,6 @@ public class MesaGenerica extends Mesa{
             Entry<Integer, Integer> franja = it.next();
             if (franja.getValue()<30) {
                 franjaDisponible= franja.getKey();
-                actualizarCupo(franjaDisponible);
             }
         }
 

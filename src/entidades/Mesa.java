@@ -33,7 +33,7 @@ public abstract class Mesa {
         this.presidenteMesa=votante;
         Tupla<Integer, Integer> turno = dameTurno();
         presidenteMesa.setPresidenteDeMesa();
-        presidenteMesa.asignarTurno(turno.getPrimerElemento(), turno.getSegundoElemento());
+        presidenteMesa.asignarTurno(turno.getX(), turno.getY());
     }
 
     public boolean hayPresidenteDeMesa() {

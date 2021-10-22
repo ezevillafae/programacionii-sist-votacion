@@ -84,8 +84,8 @@ public class SistemaVotacionUNGS {
 		
 	}
 	
-	private Tupla<Integer, Integer> asignarMesaAVotante(Votante votante, String tipoDeMesa){
-		if(!verificarMesa(tipoDeMesa) || votante == null) {
+	private Tupla<Integer, Integer> buscarTurnoEnMesas(String tipoDeMesa){
+		if(!verificarMesa(tipoDeMesa)) {
 			throw new RuntimeException();
 		}
 		
@@ -128,27 +128,32 @@ public class SistemaVotacionUNGS {
 		
 		Tupla<Integer, Integer> turno = null;
 		if(votante.tieneCertificadoTrabajo()) {
-			turno = asignarMesaAVotante(votante, Definiciones.trabajador);
+			turno = buscarTurnoEnMesas(Definiciones.trabajador);
 		}else if(votante.esMayorDe65() && votante.tieneEnfermedadPreexistente()) {
-			turno = asignarMesaAVotante(votante, Definiciones.mayor65);
+			turno = buscarTurnoEnMesas(Definiciones.mayor65);
 			if(turno == null)
-				turno = asignarMesaAVotante(votante, Definiciones.enfPreexistente);
+				turno = buscarTurnoEnMesas(Definiciones.enfPreexistente);
 		}else if(votante.esMayorDe65()) {
-			turno = asignarMesaAVotante(votante, Definiciones.mayor65);
+			turno = buscarTurnoEnMesas(Definiciones.mayor65);
 		}else if(votante.tieneEnfermedadPreexistente()) {
-			turno = asignarMesaAVotante(votante, Definiciones.enfPreexistente);
+			turno = buscarTurnoEnMesas(Definiciones.enfPreexistente);
 		}else {
-			turno = asignarMesaAVotante(votante, Definiciones.general);
+			turno = buscarTurnoEnMesas(Definiciones.general);
 		}
 		
-		return turno;
+		if(turno != null) {
+			votante.asignarTurno(turno.getX(), turno.getY());
+			return turno;
+		}else {
+			return turno;
+		}
 	}
 	
 	public int asignarTurnos() {
 		int cantTurnosAsignados = 0;
 		Set<Integer> dniVotantes = this.personasRegistradas.keySet();
 		for (Integer dniVotante : dniVotantes) {
-			if(consultarTurno(dniVotante)==null) { //Si el votante no tiene turno
+			if(consultaTurno(dniVotante)==null) { //Si el votante no tiene turno
 				if(asignarTurno(dniVotante)!=null) //Si se asignó un turno al votante
 					cantTurnosAsignados++;
 			}
@@ -157,7 +162,7 @@ public class SistemaVotacionUNGS {
 	}
 	
 	
-	public Tupla<Integer, Integer> consultarTurno(int dni) {
+	public Tupla<Integer, Integer> consultaTurno(int dni) {
 		if(!estaRegistrado(dni)) {
 			throw new RuntimeException();
 		}
@@ -222,8 +227,8 @@ public class SistemaVotacionUNGS {
 			votante = this.personasRegistradas.get(dniVotante);
 			if(votante.tieneTurno()) {
 				turno = votante.consultarTurno();
-				if(turno.getPrimerElemento() == numMesa) {
-					lista.get(turno.getSegundoElemento()).add(dniVotante);
+				if(turno.getX() == numMesa) {
+					lista.get(turno.getY()).add(dniVotante);
 				}
 			}
 		}
