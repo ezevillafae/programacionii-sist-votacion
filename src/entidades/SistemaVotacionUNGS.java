@@ -272,19 +272,34 @@ public class SistemaVotacionUNGS {
 		lista.add(new Tupla<String, Integer>(Definiciones.general, cantidadGenerica));
 		lista.add(new Tupla<String, Integer>(Definiciones.mayor65, cantidadMayores));
 		lista.add(new Tupla<String, Integer>(Definiciones.enfPreexistente, cantidadEnfPreexistente));
-		
+
 		return lista;
 	}
 	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
+		List<Tupla<String, Integer>> sinTurno= sinTurnoSegunTipoMesa();
+		Set<Integer> dniVotantes= this.personasRegistradas.keySet();
+		Votante votante = null;
 		sb.append(this.nombreSistema).append("\n");
-		for(Mesa m : this.mesas) {
-			sb.append(m);
+		sb.append("Votantes sin turno:  \n");
+		for (Tupla<String,Integer> tipoMesa : sinTurno) {
+			sb.append(tipoMesa).append("\n");
 		}
-		
+		sb.append("Votantes con turno: \n"); // devolver dni votantes, turno y si voto o no 
+		for (Integer dni : dniVotantes) {
+			votante = this.personasRegistradas.get(dni);
+			if (votante.tieneTurno()) {
+				sb.append("DNI: ").append(dni).append("Turno: ").append(votante.consultarTurno());
+				sb.append(" Realizo Voto: ").append(votante.consultarVoto()).append("\n");
+			}
+		}
+		for (Mesa mesa : this.mesas) {
+			sb.append(mesa);
+		}
 		return sb.toString();
+
 	}
 
 }

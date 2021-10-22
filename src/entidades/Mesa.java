@@ -97,14 +97,15 @@ public abstract class Mesa {
 		sb.append("-------------------------------------------\n");
 		sb.append("Mesa N° ").append(this.codigoID).append("\n");
 		sb.append(this.getClass().getName()).append("\n");
-		sb.append("Presidente de mesa :").append(this.presidenteMesa.getDni()).append("\n");
-		
-		Iterator<Integer> it = this.franjasHorarias.keySet().iterator();
-		while(it.hasNext()) {
-			Integer horario = it.next();
-			sb.append("Hora : ").append(horario).append(" Cupos : ").append(this.franjasHorarias.get(horario));
-			sb.append("\n");
-		}
+		sb.append("Presidente de mesa :").append(this.presidenteMesa.getNombre()).append(" DNI: ");
+        sb.append(this.presidenteMesa.getDni()).append("\n");
+
+        Set<Integer> horarios = this.franjasHorarias.keySet();
+        for (Integer horario : horarios) {
+            sb.append("Horario: ").append(horario).append(" Cupos asignados: ");
+            sb.append(this.franjasHorarias.get(horario)).append("\n");
+        }
+
 		return sb.toString();
 	}
     
