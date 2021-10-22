@@ -90,6 +90,21 @@ public abstract class Mesa {
 		}
 		return cantidadDeVotantes;
 	}
+	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Mesa m = (Mesa) obj;
+		if (codigoID != m.codigoID)
+			return false;
+		return true;
+	}
 
 	@Override
 	public String toString() {

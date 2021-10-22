@@ -13,7 +13,12 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import entidades.MesaEnfermedadPreexistente;
+import entidades.MesaGenerica;
+import entidades.MesaMayores;
+import entidades.MesaTrabajadores;
 import entidades.SistemaVotacionUNGS;
+import entidades.Votante;
 import estructurasdedatos.Tupla;
 
 public class SistemaVotacionTest {
@@ -308,6 +313,23 @@ public class SistemaVotacionTest {
 		}
 		
 	
+	}
+	
+	@Test
+	public void equalsMesaTest() {
+		Votante v1 = new Votante("Anonimo",123,20,false,false);
+		Votante v2 = new Votante("Anonimo",124,20,false,false);
+		Votante v3 = new Votante("Anonimo",125,20,false,false);
+		Votante v4 = new Votante("Anonimo",126,20,false,false);
+		MesaEnfermedadPreexistente mEnfPreex = new MesaEnfermedadPreexistente(v1);
+		MesaGenerica mGenerica = new MesaGenerica(v2);
+		MesaMayores mMayores = new MesaMayores(v3);
+		MesaTrabajadores mTrabajadores = new MesaTrabajadores(v4);
+		
+		assertNotEquals(mEnfPreex, mGenerica);
+		assertNotEquals(mEnfPreex, mMayores);
+		assertNotEquals(mEnfPreex, mTrabajadores);
+		assertEquals(mEnfPreex, mEnfPreex);
 	}
 	
 	private List<Integer> generarNDnis(Integer n) {

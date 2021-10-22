@@ -213,6 +213,13 @@ public class SistemaVotacionUNGS {
 		}
 	}
 	
+	/**
+	 * Llena la lista con votantes pertenecientes a la mesa numMesa, dependiendo de que franja
+	 * horaria tenga asignada el votante
+	 * 
+	 * @param lista
+	 * @param numMesa
+	 */
 	private void llenarListaConVotantesEnMesa(Map<Integer,List<Integer>> lista,int numMesa) {
 		Set<Integer> dniVotantes = this.personasRegistradas.keySet();
 		Votante votante = null;
