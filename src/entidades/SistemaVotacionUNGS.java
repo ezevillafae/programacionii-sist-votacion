@@ -2,6 +2,9 @@ package entidades;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import estructurasdedatos.Tupla;
@@ -161,6 +164,83 @@ public class SistemaVotacionUNGS {
 		return this.personasRegistradas.get(dni).consultarTurno();
 	}
 	
+	public boolean votar(int dni){
+        if (!estaRegistrado(dni))
+            throw new RuntimeException();
+        
+        Votante votante= this.personasRegistradas.get(dni);
+        if (votante.consultarVoto())
+            return false;
+
+        votante.confirmarVoto();
+        return true;
+    }
+	
+	public int votantesConTurno(String tipoMesa) {
+		 if (!verificarMesa(tipoMesa))
+	            throw new RuntimeException();
+	        int cantidadDeVotantes=0;
+	        
+	        for (Mesa mesa : mesas) {
+	            if (tipoMesa.equals(Definiciones.mayor65)){
+	                if (mesa instanceof MesaMayores)
+	                    cantidadDeVotantes += mesa.cantidadDeVotantes();
+	            }else if(tipoMesa.equals(Definiciones.enfPreexistente)){
+	                if (mesa instanceof MesaEnfermedadPreexistente)
+	                	cantidadDeVotantes += mesa.cantidadDeVotantes();
+	            }else if(tipoMesa.equals(Definiciones.trabajador)){
+	                if (mesa instanceof MesaTrabajadores) 
+	                	cantidadDeVotantes += mesa.cantidadDeVotantes();
+	            }else if (mesa instanceof MesaGenerica) {
+	            	cantidadDeVotantes += mesa.cantidadDeVotantes();
+	            }
+	        }
+			return cantidadDeVotantes;
+	}
+	
+	private Mesa buscarMesa(int numMesa) {
+		Mesa m = null;
+		for (Mesa mesa : mesas) {
+			if(mesa.dameCodigoMesa()==numMesa)
+				m = mesa;
+		}
+		return m;
+	}
+	
+	private void llenarFranjasHorarias(Map<Integer,List<Integer>> lista, Mesa mesa) {
+		Set<Integer> franjas = mesa.getFranjasHorarias().keySet();
+		for (Integer franja : franjas) {
+			lista.put(franja, new LinkedList<Integer>());
+		}
+	}
+	
+	private void llenarListaConVotantesEnMesa(Map<Integer,List<Integer>> lista,int numMesa) {
+		Set<Integer> dniVotantes = this.personasRegistradas.keySet();
+		Votante votante = null;
+		Tupla<Integer,Integer> turno = null;
+		for (Integer dniVotante : dniVotantes) {
+			votante = this.personasRegistradas.get(dniVotante);
+			if(votante.tieneTurno()) {
+				turno = votante.consultarTurno();
+				if(turno.getPrimerElemento() == numMesa) {
+					lista.get(turno.getSegundoElemento()).add(dniVotante);
+				}
+			}
+		}
+	}
+	
+	public Map<Integer,List<Integer>> asignadosAMesa(int numMesa){
+		Mesa m = buscarMesa(numMesa);
+		
+		if(m==null) 
+			throw new RuntimeException();
+		
+		Map<Integer,List<Integer>> lista = new HashMap<Integer,List<Integer>>();
+		llenarFranjasHorarias(lista, m);
+		llenarListaConVotantesEnMesa(lista, numMesa);
+		
+		return lista;
+	}
 	
 	@Override
 	public String toString() {

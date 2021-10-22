@@ -2,6 +2,7 @@ package entidades;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 
 import estructurasdedatos.Tupla;
 
@@ -60,28 +61,17 @@ public abstract class Mesa {
         return this.codigoID;
     }
 
-    public void decrementarCupo(int franjaHoraria) {
-        this.franjasHorarias.replace(franjaHoraria, this.franjasHorarias.get(franjaHoraria)-1);
+    public void actualizarCupo(int franjaHoraria) {
+        this.franjasHorarias.replace(franjaHoraria, this.franjasHorarias.get(franjaHoraria)+1);
     }
     
-    public int buscarFranjaHoraria() {
-        Iterator<Integer> it = this.franjasHorarias.keySet().iterator();
-        int franjaHoraria=-1;
-        while (it.hasNext()) {
-            Integer franja = (Integer)it.next();
-            if (this.franjasHorarias.get(franja)>0) {
-                franjaHoraria= franja;
-                return franjaHoraria;
-            }
-        }
-        return franjaHoraria; // devuelve -1 si no hay cupos en ninguna franja.
-    }
+    public abstract int buscarFranjaHoraria();
 
     public Tupla<Integer,Integer> dameTurno() {
         int franjaDisponible = buscarFranjaHoraria();
         if (franjaDisponible!=-1) {
             Tupla<Integer,Integer> turno= new Tupla<>(dameCodigoMesa(),franjaDisponible);
-            decrementarCupo(franjaDisponible);
+            actualizarCupo(franjaDisponible);
             return turno;
         }
         else
@@ -90,6 +80,15 @@ public abstract class Mesa {
 
 	public HashMap<Integer, Integer> getFranjasHorarias() {
 		return franjasHorarias;
+	}
+	
+	public int cantidadDeVotantes() {
+		int cantidadDeVotantes=0;
+		Set<Integer> franjas = this.franjasHorarias.keySet();
+		for (Integer franja : franjas) {
+			cantidadDeVotantes += this.franjasHorarias.get(franja);
+		}
+		return cantidadDeVotantes;
 	}
 
 	@Override

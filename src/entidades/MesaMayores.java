@@ -1,6 +1,8 @@
 package entidades;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 public class MesaMayores extends Mesa{
 
@@ -16,6 +18,20 @@ public class MesaMayores extends Mesa{
 			franjas.put(i, Definiciones.cupoXFranjaHorariaEnMayores);
 		}
 	}
+	
+	public int buscarFranjaHoraria() {
+        Iterator<Entry<Integer, Integer>> it = this.getFranjasHorarias().entrySet().iterator();
+        int franjaDisponible=-1;
+        while (it.hasNext() && franjaDisponible==-1) {
+            Entry<Integer, Integer> franja = it.next();
+            if (franja.getValue()<10) {
+                franjaDisponible= franja.getKey();
+                actualizarCupo(franjaDisponible);
+            }
+        }
+
+        return franjaDisponible;
+    }
 	
 	
 
