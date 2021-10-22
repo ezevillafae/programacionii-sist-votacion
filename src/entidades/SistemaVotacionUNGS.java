@@ -242,6 +242,40 @@ public class SistemaVotacionUNGS {
 		return lista;
 	}
 	
+	
+	public List<Tupla<String, Integer>> sinTurnoSegunTipoMesa(){
+		int cantidadMayores = 0;
+		int cantidadGenerica = 0;
+		int cantidadEnfPreexistente = 0;
+		int cantidadTrabajadores = 0;
+		
+		Set<Integer> dniVotantes = this.personasRegistradas.keySet();
+		Votante votante = null;
+		List<Tupla<String,Integer>> lista = new LinkedList<Tupla<String,Integer>>();
+		
+		for (Integer dniVotante : dniVotantes) {
+			votante = this.personasRegistradas.get(dniVotantes);
+			if(!votante.tieneTurno()) {
+				if(votante.tieneCertificadoTrabajo()) {
+					cantidadTrabajadores++;
+				}else if(votante.tieneEnfermedadPreexistente()) {
+					cantidadEnfPreexistente++;
+				}else if(votante.esMayorDe65()) {
+					cantidadMayores++;
+				}else {
+					cantidadGenerica++;
+				}
+			}	
+		}
+		
+		lista.add(new Tupla<String, Integer>(Definiciones.trabajador, cantidadTrabajadores));
+		lista.add(new Tupla<String, Integer>(Definiciones.general, cantidadGenerica));
+		lista.add(new Tupla<String, Integer>(Definiciones.mayor65, cantidadMayores));
+		lista.add(new Tupla<String, Integer>(Definiciones.enfPreexistente, cantidadEnfPreexistente));
+		
+		return lista;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
