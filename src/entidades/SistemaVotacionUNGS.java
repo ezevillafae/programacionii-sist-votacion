@@ -29,16 +29,10 @@ public class SistemaVotacionUNGS {
 	
 	public void registrarVotante(int dni, String nombre, int edad, boolean enfPrevia, boolean trabaja) {
 		//Verificacion edad contemplado en Contructor de Votante
-		
-		try {
 			if(!estaRegistrado(dni))
 				personasRegistradas.put(dni, new Votante(nombre,dni,edad,enfPrevia,trabaja));
 			else
-				throw new Exception();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+				throw new RuntimeException();	
 	}
 	
 	private boolean verificarMesa(String tipoMesa)   {
