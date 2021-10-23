@@ -13,14 +13,13 @@ public abstract class Mesa {
     private HashMap<Integer,Integer> franjasHorarias; // (franja-cupo)
     
     public Mesa(Votante presidenteMesa) {
-    	if(presidenteMesa != null) {
-    		this.codigoID = codigoContador++;
-            this.franjasHorarias= new HashMap<>();
-            crearFranjasHorarias();
-            asignarPresidente(presidenteMesa);
-    	}else {
+    	if(presidenteMesa == null) {
     		throw new RuntimeException();
     	}
+    	this.codigoID = codigoContador++;
+    	this.franjasHorarias= new HashMap<>();
+    	crearFranjasHorarias();
+    	asignarPresidente(presidenteMesa);
     }
 
     public abstract void crearFranjasHorarias();
