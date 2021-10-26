@@ -1,6 +1,5 @@
 package entidades;
 
-
 import estructurasdedatos.Tupla;
 
 public class Votante extends Persona {
@@ -8,24 +7,24 @@ public class Votante extends Persona {
 	private boolean presidenteDeMesa;
 	private boolean voto;
 	private Tupla<Integer, Integer> turno;
-	
-	public Votante(String nombre, int dni, int edad, boolean enfermedad, boolean certificadoTrabajo ) {
+
+	public Votante(String nombre, int dni, int edad, boolean enfermedad, boolean certificadoTrabajo) {
 		super(nombre, dni, edad, enfermedad);
-		
-		if(edad < 16) {
-			throw new RuntimeException();
+
+		if (edad < 16) {
+			throw new RuntimeException("Un votante debe tener > 16 años");
 		}
-		
+
 		this.voto = false;
 		this.turno = null;
-		this.certificadoTrabajo=certificadoTrabajo;
+		this.certificadoTrabajo = certificadoTrabajo;
 		this.presidenteDeMesa = false;
 	}
-	
+
 	public boolean esPresidenteDeMesa() {
 		return this.presidenteDeMesa;
 	}
-	
+
 	public void setPresidenteDeMesa() {
 		if (!tieneTurno()) {
 			this.presidenteDeMesa = true;
@@ -35,28 +34,28 @@ public class Votante extends Persona {
 	public boolean tieneCertificadoTrabajo() {
 		return this.certificadoTrabajo;
 	}
-	
+
 	public void confirmarVoto() {
 		if (tieneTurno()) {
 			this.voto = true;
 		}
 	}
-	
+
 	public boolean tieneTurno() {
 		return turno != null;
 	}
-	
+
 	public boolean consultarVoto() {
 		return this.voto;
 	}
-	
-	public Tupla<Integer,Integer> asignarTurno(int codigoMesa, int horario) {
+
+	public Tupla<Integer, Integer> asignarTurno(int codigoMesa, int horario) {
 		if (!tieneTurno()) // advertencia pregunta 2 veces (sistema en asignarTurno)
-			this.turno = new Tupla<>(codigoMesa,horario);
+			this.turno = new Tupla<>(codigoMesa, horario);
 		return consultarTurno();
 	}
 
-	public Tupla<Integer,Integer> consultarTurno() {
+	public Tupla<Integer, Integer> consultarTurno() {
 		return this.turno;
 	}
 

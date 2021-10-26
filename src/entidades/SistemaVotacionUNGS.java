@@ -28,14 +28,14 @@ public class SistemaVotacionUNGS {
 	}
 	
 	public void registrarVotante(int dni, String nombre, int edad, boolean enfPrevia, boolean trabaja) {
-		//Verificacion edad contemplado en Contructor de Votante
-			if(!estaRegistrado(dni))
-				personasRegistradas.put(dni, new Votante(nombre,dni,edad,enfPrevia,trabaja));
-			else
+		//Verificacion edad y nombre contemplado en Contructor de Votante
+			if(estaRegistrado(dni))
 				throw new RuntimeException();	
+			
+			personasRegistradas.put(dni, new Votante(nombre,dni,edad,enfPrevia,trabaja));
 	}
 	
-	private boolean verificarMesa(String tipoMesa)   {
+	private boolean verificarTipoMesa(String tipoMesa)   {
 		if( tipoMesa.equals(Definiciones.mayor65) ||
 			tipoMesa.equals(Definiciones.enfPreexistente) ||
 			tipoMesa.equals(Definiciones.trabajador) ||
@@ -54,7 +54,7 @@ public class SistemaVotacionUNGS {
 	}
 	
 	public int agregarMesa(String tipoMesa, int dni){
-		if(!verificarMesa(tipoMesa) || !verificarPresidentDeMesa(dni)) {
+		if(!verificarTipoMesa(tipoMesa) || !verificarPresidentDeMesa(dni)) {
 			throw new RuntimeException();
 		}
 		Votante presidente = this.personasRegistradas.get(dni);
@@ -79,7 +79,7 @@ public class SistemaVotacionUNGS {
 	}
 	
 	private Tupla<Integer, Integer> buscarTurnoEnMesas(String tipoDeMesa){
-		if(!verificarMesa(tipoDeMesa)) {
+		if(!verificarTipoMesa(tipoDeMesa)) {
 			throw new RuntimeException();
 		}
 		
@@ -176,25 +176,26 @@ public class SistemaVotacionUNGS {
     }
 	
 	public int votantesConTurno(String tipoMesa) {
-		 if (!verificarMesa(tipoMesa))
-	            throw new RuntimeException();
-	        int cantidadDeVotantes=0;
-	        
-	        for (Mesa mesa : mesas) {
-	            if (tipoMesa.equals(Definiciones.mayor65)){
-	                if (mesa instanceof MesaMayores)
-	                    cantidadDeVotantes += mesa.cantidadDeVotantes();
-	            }else if(tipoMesa.equals(Definiciones.enfPreexistente)){
-	                if (mesa instanceof MesaEnfermedadPreexistente)
-	                	cantidadDeVotantes += mesa.cantidadDeVotantes();
-	            }else if(tipoMesa.equals(Definiciones.trabajador)){
-	                if (mesa instanceof MesaTrabajadores) 
-	                	cantidadDeVotantes += mesa.cantidadDeVotantes();
-	            }else if (mesa instanceof MesaGenerica) {
-	            	cantidadDeVotantes += mesa.cantidadDeVotantes();
-	            }
-	        }
-			return cantidadDeVotantes;
+		if (!verificarTipoMesa(tipoMesa))
+			throw new RuntimeException("Tipo de mesa inválido");
+
+		int cantidadDeVotantes = 0;
+
+		for (Mesa mesa : mesas) {
+			if (tipoMesa.equals(Definiciones.mayor65)) {
+				if (mesa instanceof MesaMayores)
+					cantidadDeVotantes += mesa.cantidadDeVotantes();
+			} else if (tipoMesa.equals(Definiciones.enfPreexistente)) {
+				if (mesa instanceof MesaEnfermedadPreexistente)
+					cantidadDeVotantes += mesa.cantidadDeVotantes();
+			} else if (tipoMesa.equals(Definiciones.trabajador)) {
+				if (mesa instanceof MesaTrabajadores)
+					cantidadDeVotantes += mesa.cantidadDeVotantes();
+			} else if (mesa instanceof MesaGenerica) {
+				cantidadDeVotantes += mesa.cantidadDeVotantes();
+			}
+		}
+		return cantidadDeVotantes;
 	}
 	
 	private Mesa buscarMesa(int numMesa) {
@@ -206,6 +207,12 @@ public class SistemaVotacionUNGS {
 		return m;
 	}
 	
+	/**
+	 * Llena cada clave del Map con cada franja horaria de una mesa 
+	 * 
+	 * @param lista
+	 * @param mesa
+	 */
 	private void llenarFranjasHorarias(Map<Integer,List<Integer>> lista, Mesa mesa) {
 		Set<Integer> franjas = mesa.getFranjasHorarias().keySet();
 		for (Integer franja : franjas) {
@@ -288,11 +295,14 @@ public class SistemaVotacionUNGS {
 		List<Tupla<String, Integer>> sinTurno= sinTurnoSegunTipoMesa();
 		Set<Integer> dniVotantes= this.personasRegistradas.keySet();
 		Votante votante = null;
+		
 		sb.append(this.nombreSistema).append("\n");
 		sb.append("Votantes sin turno:  \n");
+		
 		for (Tupla<String,Integer> tipoMesa : sinTurno) {
 			sb.append(tipoMesa).append("\n");
 		}
+		
 		sb.append("Votantes con turno: \n"); // devolver dni votantes, turno y si voto o no 
 		for (Integer dni : dniVotantes) {
 			votante = this.personasRegistradas.get(dni);
@@ -301,6 +311,7 @@ public class SistemaVotacionUNGS {
 				sb.append(" Realizo Voto: ").append(votante.consultarVoto()).append("\n");
 			}
 		}
+		
 		for (Mesa mesa : this.mesas) {
 			sb.append(mesa);
 		}
