@@ -4,7 +4,7 @@ package test;
 import java.util.List;
 import java.util.Map;
 
-import entidades.SistemaVotacionUNGS;
+import entidades.SistemaVotacion;
 import estructurasdedatos.Tupla;
 
 public class Cliente {
@@ -13,7 +13,7 @@ public class Cliente {
 	
 	public static void main(String[] args) {
 		
-		SistemaVotacionUNGS sistema = new SistemaVotacionUNGS("Sistema");
+		SistemaVotacion sistema = new SistemaVotacion("Sistema");
 				
 		sistema.registrarVotante(
 				F.dniFrodo, 

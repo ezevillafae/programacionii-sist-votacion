@@ -17,18 +17,18 @@ import entidades.MesaEnfermedadPreexistente;
 import entidades.MesaGenerica;
 import entidades.MesaMayores;
 import entidades.MesaTrabajadores;
-import entidades.SistemaVotacionUNGS;
+import entidades.SistemaVotacion;
 import entidades.Votante;
 import estructurasdedatos.Tupla;
 
 public class SistemaVotacionTest {
 
-	private SistemaVotacionUNGS sistema;
+	private SistemaVotacion sistema;
 	private static final Fixture F = Fixture.INSTANCE;
 	
 	@Before
 	public void setUp() {
-		sistema = new SistemaVotacionUNGS("Sede UNGS");
+		sistema = new SistemaVotacion("Sede UNGS");
 				
 		sistema.registrarVotante(
 				F.dniFrodo, 

@@ -9,12 +9,12 @@ import java.util.Set;
 
 import estructurasdedatos.Tupla;
 
-public class SistemaVotacionUNGS {
+public class SistemaVotacion {
 	private String nombreSistema;
 	private HashMap<Integer, Votante> personasRegistradas;
 	private Set<Mesa> mesas;
 	
-	public SistemaVotacionUNGS(String nombreSistema) {
+	public SistemaVotacion(String nombreSistema) {
 		if(nombreSistema == null) {
 			throw new RuntimeException();
 		}
