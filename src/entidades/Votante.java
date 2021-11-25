@@ -25,7 +25,7 @@ public class Votante extends Persona {
 		return this.presidenteDeMesa;
 	}
 
-	public void setPresidenteDeMesa() {
+	public void asignarComoPresidenteDeMesa() {
 		if (!tieneTurno()) {
 			this.presidenteDeMesa = true;
 		}
@@ -57,6 +57,18 @@ public class Votante extends Persona {
 
 	public Tupla<Integer, Integer> consultarTurno() {
 		return this.turno;
+	}
+	
+	public Integer consultarHorario() {
+		if(!tieneTurno()) 
+			return null;
+		return consultarTurno().getY();
+	}
+	
+	public boolean estaEnMesa(Integer codigo) {
+		if(!tieneTurno()) 
+			return false;
+		return consultarTurno().getX().equals(codigo);
 	}
 
 	@Override

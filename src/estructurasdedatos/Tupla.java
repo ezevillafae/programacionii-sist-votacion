@@ -21,7 +21,7 @@ public class Tupla<A,B> {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("[").append(this.primerElemento).append(", ").append(this.segundoElemento).append("]").append("\n");
+		sb.append("[").append(this.primerElemento).append(", ").append(this.segundoElemento).append("]");
 		return sb.toString();
 	}
 	

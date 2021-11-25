@@ -31,7 +31,7 @@ public abstract class Mesa {
  
         this.presidenteMesa=votante;
         Tupla<Integer, Integer> turno = dameTurno();
-        presidenteMesa.setPresidenteDeMesa();
+        presidenteMesa.asignarComoPresidenteDeMesa();
         presidenteMesa.asignarTurno(turno.getX(), turno.getY());
     }
 
@@ -39,22 +39,6 @@ public abstract class Mesa {
         return this.presidenteMesa!=null ;
     }
     
-    /**
-     * 
-     * 
-     * @return true, si existe algún valor en franjasHorarias tal que > 0
-     * @Advertencia, no se usa este metodo
-     *
-     */
-    public boolean hayTurnosDisponibles() {
-        Iterator<Integer> it = this.franjasHorarias.keySet().iterator();
-        boolean existeCupoDisponible = false;
-        while (it.hasNext()) {
-            Integer franja = (Integer)it.next();
-            existeCupoDisponible= existeCupoDisponible || this.franjasHorarias.get(franja) >0;
-        }
-        return existeCupoDisponible;
-    }
 
     public int dameCodigoMesa() {
         return this.codigoID;

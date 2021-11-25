@@ -1,12 +1,12 @@
 package entidades;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import estructurasdedatos.Tupla;
 
 public class SistemaVotacion {
@@ -228,17 +228,10 @@ public class SistemaVotacion {
 	 * @param numMesa
 	 */
 	private void llenarListaConVotantesEnMesa(Map<Integer,List<Integer>> lista,int numMesa) {
-		Set<Integer> dniVotantes = this.personasRegistradas.keySet();
-		Votante votante = null;
-		Tupla<Integer,Integer> turno = null;
-		for (Integer dniVotante : dniVotantes) {
-			votante = this.personasRegistradas.get(dniVotante);
-			if(votante.tieneTurno()) {
-				turno = votante.consultarTurno();
-				if(turno.getX() == numMesa) {
-					lista.get(turno.getY()).add(dniVotante);
-				}
-			}
+		Collection<Votante> votantes = this.personasRegistradas.values();
+		for(Votante votante : votantes) {
+			if(votante.estaEnMesa(numMesa))
+				lista.get(votante.consultarHorario()).add(votante.getDni());
 		}
 	}
 	
@@ -307,8 +300,8 @@ public class SistemaVotacion {
 		for (Integer dni : dniVotantes) {
 			votante = this.personasRegistradas.get(dni);
 			if (votante.tieneTurno()) {
-				sb.append("DNI: ").append(dni).append("Turno: ").append(votante.consultarTurno());
-				sb.append(" Realizo Voto: ").append(votante.consultarVoto()).append("\n");
+				sb.append("DNI: ").append(dni).append(", Turno: ").append(votante.consultarTurno());
+				sb.append("  Realizo Voto: ").append(votante.consultarVoto()).append("\n");
 			}
 		}
 		

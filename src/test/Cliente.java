@@ -13,7 +13,7 @@ public class Cliente {
 	
 	public static void main(String[] args) {
 		
-		SistemaVotacion sistema = new SistemaVotacion("Sistema");
+		SistemaVotacion sistema = new SistemaVotacion("Sistema de Turnos para Votación - UNGS");
 				
 		sistema.registrarVotante(
 				F.dniFrodo, 
