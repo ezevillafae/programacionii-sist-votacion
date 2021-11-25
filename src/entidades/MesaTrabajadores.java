@@ -3,7 +3,6 @@ package entidades;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import estructurasdedatos.Tupla;
 
 public class MesaTrabajadores extends Mesa{
 
@@ -24,15 +23,6 @@ public class MesaTrabajadores extends Mesa{
 	}
 	
 	@Override
-	public Tupla<Integer, Integer> dameTurno() {
-		int franjaDisponible = buscarFranjaHoraria();
-		actualizarCupo(franjaDisponible);
-		Tupla<Integer,Integer> turno= new Tupla<>(dameCodigoMesa(),franjaDisponible);
-		return turno;
-	}
-
-
-	@Override
 	public boolean equals(Object obj) {
 		return super.equals(obj);
 	}
@@ -42,6 +32,5 @@ public class MesaTrabajadores extends Mesa{
 		return super.toString();
 	}
 	
-	
-	
+
 }

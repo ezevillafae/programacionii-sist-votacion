@@ -40,7 +40,6 @@ public class Persona {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Persona : {");
 		sb.append("\n");
 		sb.append("nombre= ").append(nombre);
 		sb.append("\n");
@@ -49,7 +48,6 @@ public class Persona {
 		sb.append("edad= ").append(edad);
 		sb.append("\n");
 		sb.append("enfermedad= ").append(enfermedad);
-		sb.append("\n}\n");
 		return sb.toString();
 	}
 	

@@ -50,6 +50,7 @@ public class SistemaVotacion {
 			return false;
 		if(this.personasRegistradas.get(dni).tieneTurno())
 			return false;
+		
 		return true;
 	}
 	

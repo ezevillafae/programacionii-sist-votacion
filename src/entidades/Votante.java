@@ -75,16 +75,9 @@ public class Votante extends Persona {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("----------- votante -----------");
-		sb.append("\n");
-		sb.append("nombre : ").append(getNombre());
-		sb.append("\n");
-		sb.append("dni : ").append(getDni());
-		sb.append("\n");
-		sb.append("edad : ").append(getEdad());
+		sb.append(super.toString());
 		sb.append("\n");
 		sb.append("certificado de trabajo :").append(certificadoTrabajo);
-		sb.append("\n");
-		sb.append("enfermedad : ").append(tieneEnfermedadPreexistente());
 		sb.append("\n");
 		sb.append("votó : ").append(this.voto);
 		sb.append("\n");

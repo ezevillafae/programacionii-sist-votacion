@@ -1,7 +1,7 @@
 package entidades;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
 
 import estructurasdedatos.Tupla;
@@ -67,9 +67,9 @@ public abstract class Mesa {
 	
 	public int cantidadDeVotantes() {
 		int cantidadDeVotantes=0;
-		Set<Integer> franjas = this.franjasHorarias.keySet();
-		for (Integer franja : franjas) {
-			cantidadDeVotantes += this.franjasHorarias.get(franja);
+		Collection<Integer> cupos = this.franjasHorarias.values();
+		for (Integer cupo : cupos) {
+			cantidadDeVotantes += cupo;
 		}
 		return cantidadDeVotantes;
 	}
